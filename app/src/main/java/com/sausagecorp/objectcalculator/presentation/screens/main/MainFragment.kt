@@ -54,11 +54,7 @@ class MainFragment : Fragment() {
     }
 
     private fun initProductsRv() {
-        val productsList: ArrayList<ProductsModel> = arrayListOf(
-            ProductsModel("Пол", "Линолеум 5х3", 1200, 4),
-            ProductsModel("Потолок", "Натяжной потолок", 900, 6),
-            ProductsModel("Стены", "Жесткая краска для стен", 1700, 12),
-        )
+        val productsList: ArrayList<ProductsModel> = arrayListOf()
         val adapterProducts = ProductsAdapter(productsList)
         val rv = binding.productsRv
         rv.apply {
