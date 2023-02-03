@@ -5,16 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sausagecorp.domain.models.SubCategoryModel
 import com.sausagecorp.objectcalculator.databinding.FragmentCategoriesBinding
 import com.sausagecorp.objectcalculator.presentation.adapters.CategoryAdapter
-import com.sausagecorp.objectcalculator.presentation.models.CategoryModel
 
 class CategoriesFragment : Fragment() {
 
     private lateinit var binding: FragmentCategoriesBinding
-    private val viewModel by lazy { ViewModelProvider(this).get(CategoriesFragmentViewModel::class.java) }
+    private val viewModel by viewModels<CategoriesFragmentViewModel>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCategoriesBinding.inflate(inflater, container, false)
@@ -25,17 +25,17 @@ class CategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Loading default category list to RecyclerView when fragment launched
-        val defaultCategoriesList: ArrayList<CategoryModel> = arrayListOf(
-                CategoryModel("Пол", 1),
-                CategoryModel("Потолок", 0),
-                CategoryModel("Обои", 0),
-                CategoryModel("Краска", 0)
+        val defaultCategoriesList: ArrayList<SubCategoryModel> = arrayListOf(
+                SubCategoryModel("Пол", 1),
+                SubCategoryModel("Потолок", 0),
+                SubCategoryModel("Обои", 0),
+                SubCategoryModel("Краска", 0)
         )
         initRv(defaultCategoriesList)
     }
 
     // Initializing category RecyclerView
-    private fun initRv(categoriesList: ArrayList<CategoryModel>) {
+    private fun initRv(categoriesList: ArrayList<SubCategoryModel>) {
         val categorisRv = binding.categoriesRv
         val adapterCategories = CategoryAdapter(categoriesList, binding, viewModel, viewLifecycleOwner)
         categorisRv.apply {

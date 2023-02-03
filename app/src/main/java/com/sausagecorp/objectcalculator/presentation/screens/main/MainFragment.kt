@@ -9,10 +9,10 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sausagecorp.domain.models.ProductModel
 import com.sausagecorp.objectcalculator.R
 import com.sausagecorp.objectcalculator.databinding.FragmentMainBinding
-import com.sausagecorp.objectcalculator.presentation.adapters.ProductsAdapter
-import com.sausagecorp.objectcalculator.presentation.models.ProductsModel
+import com.sausagecorp.objectcalculator.presentation.adapters.ProductsMainScreenAdapter
 
 class MainFragment : Fragment() {
 
@@ -54,8 +54,8 @@ class MainFragment : Fragment() {
     }
 
     private fun initProductsRv() {
-        val productsList: ArrayList<ProductsModel> = arrayListOf()
-        val adapterProducts = ProductsAdapter(productsList)
+        val productsList: ArrayList<ProductModel> = arrayListOf()
+        val adapterProducts = ProductsMainScreenAdapter(productsList)
         val rv = binding.productsRv
         rv.apply {
             adapter = adapterProducts
