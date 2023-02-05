@@ -37,10 +37,25 @@ class CategoriesFragment : Fragment() {
     // Initializing category RecyclerView
     private fun initRv(categoriesList: ArrayList<SubCategoryModel>) {
         val categorisRv = binding.categoriesRv
-        val adapterCategories = CategoryAdapter(categoriesList, binding, viewModel, viewLifecycleOwner)
+        val adapterCategories = CategoryAdapter(categoriesList, categoriesClickListener)
         categorisRv.apply {
             adapter = adapterCategories
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    // Categories Item Click Listener
+    private val categoriesClickListener = object : CategoryAdapter.ItemClickListener {
+        override fun onClick(model: SubCategoryModel, adapterInstance: CategoryAdapter, categoryName: String) {
+            binding.categoryNameTV.text = model.subCategoryName
+            viewModel.loadCategoriesById(model.subCategoryId)
+            if (model.subCategoryName != "Товары") {
+                viewModel.categoriesList.observe(viewLifecycleOwner) {
+                    adapterInstance.changeList(it)
+                }
+            } else {
+                adapterInstance.navigateToProducts(model, binding.root, categoryName)
+            }
         }
     }
 

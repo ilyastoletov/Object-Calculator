@@ -1,16 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:background="@color/grey_main"
-    android:layout_height="wrap_content">
+    android:layout_height="130dp">
 
     <TextView
         android:id="@+id/product_name_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Болгарка Hyundai BS-102"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/medium"
+        />
+
+    <TextView
+        android:id="@+id/product_quantity_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="В наличии: 51"
+        android:layout_marginTop="36dp"
+        android:layout_marginStart="25dp"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/light"
+        />
+
+    <TextView
+        android:id="@+id/product_added_count_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добавлено: 0"
+        android:layout_marginTop="62dp"
+        android:layout_marginStart="25dp"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/light"
+        />
+
+    <TextView
+        android:id="@+id/product_price_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Цена: 1200₽/м³"
+        android:layout_marginTop="88dp"
+        android:layout_marginStart="25dp"
+        android:paddingBottom="10dp"
+        android:textSize="17sp"
         android:textColor="@color/white"
         android:fontFamily="@font/regular"
         />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="#9F9F9F"
+        android:layout_gravity="bottom"/>
+
+    <TextView
+        android:id="@+id/added_products_counter_tV"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center|end"
+        android:text="0"
+        android:fontFamily="@font/medium"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:layout_marginEnd="65dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/product_count_decrease_btn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_baseline_add_24"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="10dp"/>
+
+    <ImageView
+        android:id="@+id/product_count_increase_btn"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/baseline_remove_24"
+        android:layout_gravity="center|end"
+        android:layout_marginEnd="110dp"/>
 
 </FrameLayout>

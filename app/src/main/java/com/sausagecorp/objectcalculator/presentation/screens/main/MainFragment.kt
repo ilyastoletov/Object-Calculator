@@ -13,6 +13,7 @@ import com.sausagecorp.domain.models.ProductModel
 import com.sausagecorp.objectcalculator.R
 import com.sausagecorp.objectcalculator.databinding.FragmentMainBinding
 import com.sausagecorp.objectcalculator.presentation.adapters.ProductsMainScreenAdapter
+import kotlin.math.roundToInt
 
 class MainFragment : Fragment() {
 
@@ -29,7 +30,7 @@ class MainFragment : Fragment() {
         initCountButton()
         initProductsRv()
         viewModel.objectVolume.observe(viewLifecycleOwner) {
-            binding.volumeTextView.text = it.toString()
+            binding.volumeTextView.text = it.toString().format(".3f", it)
         }
 
         binding.chooseProductsButton.setOnClickListener {

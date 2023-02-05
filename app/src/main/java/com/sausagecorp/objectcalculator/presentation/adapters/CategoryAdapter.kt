@@ -7,34 +7,26 @@ import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.sausagecorp.domain.models.CategoryModel
 import com.sausagecorp.domain.models.SubCategoryModel
 import com.sausagecorp.objectcalculator.R
 import com.sausagecorp.objectcalculator.databinding.CategoryItemBinding
 import com.sausagecorp.objectcalculator.databinding.FragmentCategoriesBinding
 import com.sausagecorp.objectcalculator.presentation.screens.categories.CategoriesFragmentViewModel
+import java.util.LinkedList
 
-class CategoryAdapter(private var categoriesList: ArrayList<SubCategoryModel>,
-                      private val fragmentBinding: FragmentCategoriesBinding,
-                      private val fragmentViewModel: CategoriesFragmentViewModel,
-                      private val fragmentLifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<CategoryAdapter.Holder>() {
+class CategoryAdapter(private var categoriesList: ArrayList<SubCategoryModel>, private val listener: ItemClickListener) : RecyclerView.Adapter<CategoryAdapter.Holder>() {
 
-    inner class Holder(private val view: View, private val binding: CategoryItemBinding) : RecyclerView.ViewHolder(view), ItemClickListener {
+    inner class Holder(private val view: View, private val binding: CategoryItemBinding) : RecyclerView.ViewHolder(view) {
         fun bind(model: SubCategoryModel) {
-            binding.categoryNameCard.text = model.subCategoryName
+            val name = model.subCategoryName
+            binding.categoryNameCard.text = name
             view.setOnClickListener {
-                onClick(model)
-            }
-        }
-
-        override fun onClick(model: SubCategoryModel) {
-            fragmentBinding.categoryNameTV.text = model.subCategoryName
-            fragmentViewModel.loadCategoriesById(model.subCategoryId)
-            if (model.subCategoryName != "Товары") {
-                fragmentViewModel.categoriesList.observe(fragmentLifecycleOwner) {
-                    changeList(it)
-                }
-            } else {
-                navigateToProducts(model, view)
+                listener.onClick(
+                    model = model,
+                    adapterInstance = this@CategoryAdapter,
+                    categoryName = name
+                )
             }
         }
     }
@@ -56,16 +48,16 @@ class CategoryAdapter(private var categoriesList: ArrayList<SubCategoryModel>,
     }
 
     // If clicked on products card, navigating to ProductsFragment
-    private fun navigateToProducts(model: SubCategoryModel, view: View) {
+    fun navigateToProducts(model: SubCategoryModel, view: View, categoryName: String) {
         val navigationBundle = Bundle()
-        navigationBundle.putString("category_name", model.subCategoryName)
+        navigationBundle.putString("category_name", categoryName)
         navigationBundle.putInt("category_id", model.subCategoryId)
         view.findNavController()
-            .navigate(R.id.action_categoriesFragment_to_productsFragment, navigationBundle)
+            .navigate(resId = R.id.action_categoriesFragment_to_productsFragment, args = navigationBundle)
     }
 
     interface ItemClickListener {
-        fun onClick(model: SubCategoryModel)
+        fun onClick(model: SubCategoryModel, adapterInstance: CategoryAdapter, categoryName: String)
     }
 
 }

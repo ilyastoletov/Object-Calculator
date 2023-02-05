@@ -1,5 +1,7 @@
 package com.sausagecorp.domain.usecase
 
-class CountObjectVolumeUseCase {
-    fun execute(a: Double, b: Double, c: Double): Double = a * b * c
+import com.sausagecorp.domain.repository.ObjectVolumeRepository
+
+class CountObjectVolumeUseCase(private val objectVolumeRepository: ObjectVolumeRepository) {
+    fun invoke(a: Double, b: Double, c: Double): Double = objectVolumeRepository.countObjectVolume(a, b, c)
 }
