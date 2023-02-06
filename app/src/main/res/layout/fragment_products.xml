@@ -7,23 +7,12 @@
     android:background="@color/grey_main"
     tools:context=".presentation.screens.products.ProductsFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/products_search_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:menu="@menu/products_search_menu"
-        android:minHeight="56dp"
-        android:background="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@color/white" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/products_recyclerView"
-            android:layout_marginTop="56dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

@@ -14,15 +14,16 @@ class ProductsAdapter(private val productsList: ArrayList<ProductModel>, private
             binding.apply {
                 productNameTextView.text = model.name
                 productQuantityTextView.text = "В наличии: " + model.quantity.toString()
-                productAddedCountTextView.text = "Добавлено: " + model.added.toString()
+                productAddedCountTextView.text = model.added.toString()
                 productPriceTextView.text = "Цена: " + model.price.toString() + "₽/м³"
+                addedProductsCounterTV.text = model.added.toString()
 
                 productCountIncreaseBtn.setOnClickListener {
-                    listener.onIncreaseCounter(this)
+                    listener.onIncreaseCounter(this, model)
                 }
 
                 productCountDecreaseBtn.setOnClickListener {
-                    listener.onDecreaseCounter(this)
+                    listener.onDecreaseCounter(this, model)
                 }
             }
         }
@@ -40,8 +41,8 @@ class ProductsAdapter(private val productsList: ArrayList<ProductModel>, private
     override fun getItemCount(): Int = productsList.size
 
     interface ProductClickListener {
-        fun onIncreaseCounter(binding: ProductsItemBinding)
-        fun onDecreaseCounter(binding: ProductsItemBinding)
+        fun onIncreaseCounter(binding: ProductsItemBinding, model: ProductModel)
+        fun onDecreaseCounter(binding: ProductsItemBinding, model: ProductModel)
     }
 
 }

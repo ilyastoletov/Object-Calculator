@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sausagecorp.domain.models.SubCategoryModel
@@ -23,6 +24,9 @@ class CategoriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val activity: AppCompatActivity = requireActivity() as AppCompatActivity
+        activity.supportActionBar!!.hide()
 
         // Loading default category list to RecyclerView when fragment launched
         val defaultCategoriesList: ArrayList<SubCategoryModel> = arrayListOf(

@@ -2,7 +2,7 @@ package com.sausagecorp.data.repository
 
 import com.sausagecorp.data.api.categories.models.CategoriesDto
 import com.sausagecorp.data.api.categories.services.CategoriesRetrofitInstance
-import com.sausagecorp.data.mappers.CategoryMapper
+import com.sausagecorp.data.api.categories.mappers.CategoryMapper
 import com.sausagecorp.domain.models.CategoryModel
 import com.sausagecorp.domain.models.SubCategoryModel
 import com.sausagecorp.domain.repository.CategoriesRepository

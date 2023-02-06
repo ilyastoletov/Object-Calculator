@@ -29,12 +29,23 @@
         />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Добавлено: "
+        android:layout_marginTop="62dp"
+        android:layout_marginStart="25dp"
+        android:textSize="17sp"
+        android:textColor="@color/white"
+        android:fontFamily="@font/light"
+        />
+
+    <TextView
         android:id="@+id/product_added_count_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Добавлено: 0"
+        android:text="0"
         android:layout_marginTop="62dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="125dp"
         android:textSize="17sp"
         android:textColor="@color/white"
         android:fontFamily="@font/light"
@@ -59,31 +70,43 @@
         android:background="#9F9F9F"
         android:layout_gravity="bottom"/>
 
-    <TextView
-        android:id="@+id/added_products_counter_tV"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_gravity="center|end"
-        android:text="0"
-        android:fontFamily="@font/medium"
-        android:textColor="@color/white"
-        android:textSize="50sp"
-        android:layout_marginEnd="65dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center">
 
-    <ImageView
-        android:id="@+id/product_count_decrease_btn"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/ic_baseline_add_24"
-        android:layout_gravity="center|end"
-        android:layout_marginEnd="10dp"/>
+        <TextView
+            android:id="@+id/added_products_counter_tV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="50dp"
+            android:fontFamily="@font/medium"
+            android:text="0"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
 
-    <ImageView
-        android:id="@+id/product_count_increase_btn"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:src="@drawable/baseline_remove_24"
-        android:layout_gravity="center|end"
-        android:layout_marginEnd="110dp"/>
+        <ImageView
+            android:id="@+id/product_count_decrease_btn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="center|end"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="7dp"
+            android:src="@drawable/ic_baseline_add_24" />
+
+        <ImageView
+            android:id="@+id/product_count_increase_btn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_toStartOf="@+id/added_products_counter_tV"
+            android:src="@drawable/baseline_remove_24" />
+
+    </RelativeLayout>
 
 </FrameLayout>
