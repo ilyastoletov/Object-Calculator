@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
-    private val viewModel by viewModels<MainFragmentViewModel>()
+    private val viewModel: MainFragmentViewModel by viewModels { MainFragmentViewModel.Factory }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -31,10 +31,19 @@ class MainFragment : Fragment() {
         val activity: AppCompatActivity = requireActivity() as AppCompatActivity
         activity.supportActionBar!!.hide()
 
-        initCountButton()
-        initProductsRv()
+        binding.countVolumeButton.setOnClickListener(countButtonListener)
+
+        viewModel.getProductsList()
+        viewModel.productsList.observe(viewLifecycleOwner) {
+            initProductsRv(it)
+        }
+
         viewModel.objectVolume.observe(viewLifecycleOwner) {
             binding.volumeTextView.text = it.toString().format(".3f", it)
+        }
+
+        viewModel.fullPrice.observe(viewLifecycleOwner) {
+            binding.finalPriceTextView.text = it.toString() + "₽"
         }
 
         binding.chooseProductsButton.setOnClickListener {
@@ -43,7 +52,7 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun initCountButton() = binding.countVolumeButton.setOnClickListener {
+    private val countButtonListener = View.OnClickListener {
         val a = binding.objectHeightEditText.text
         val b = binding.objectWidthEditText.text
         val c = binding.objectTopHeightEditText.text
@@ -52,14 +61,13 @@ class MainFragment : Fragment() {
             viewModel.countObjectVolume(
                 a.toString().toDouble(), b.toString().toDouble(), c.toString().toDouble()
             )
+            viewModel.countFullPrice()
         } else {
             Toast.makeText(context, "Введите значения", Toast.LENGTH_SHORT).show()
         }
-
     }
 
-    private fun initProductsRv() {
-        val productsList: ArrayList<ProductModel> = arrayListOf()
+    private fun initProductsRv(productsList: ArrayList<ProductModel>) {
         val adapterProducts = ProductsMainScreenAdapter(productsList)
         val rv = binding.productsRv
         rv.apply {

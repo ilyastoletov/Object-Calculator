@@ -2,11 +2,8 @@ package com.sausagecorp.objectcalculator.presentation.screens.products
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.sausagecorp.data.repository.ProductRepositoryImpl
 import com.sausagecorp.domain.models.ProductModel
 import com.sausagecorp.domain.usecase.GetProductsListByCategoryIdUseCase
@@ -16,7 +13,7 @@ import com.sausagecorp.domain.usecase.SaveProductsListUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ProductsFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class ProductsFragmentViewModel(application: Application) : ViewModel() {
 
     private val appContext: Context = application.applicationContext
 
@@ -53,6 +50,15 @@ class ProductsFragmentViewModel(application: Application) : AndroidViewModel(app
     fun saveProduct(product: ProductModel) {
         viewModelScope.launch(Dispatchers.IO) {
             saveProductUseCase.invoke(product)
+        }
+    }
+
+    companion object {
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+                val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
+                return ProductsFragmentViewModel(application) as T
+            }
         }
     }
 

@@ -9,11 +9,15 @@ import com.sausagecorp.objectcalculator.databinding.ProductMainScreenItemBinding
 
 class ProductsMainScreenAdapter(private val productsList: ArrayList<ProductModel>) : RecyclerView.Adapter<ProductsMainScreenAdapter.ProductHolder>() {
 
-    inner class ProductHolder(v: View, binding: ProductMainScreenItemBinding) : RecyclerView.ViewHolder(v) {
-        val categoryName = binding.categoryNameText
-        val productName = binding.procuctName
-        val price = binding.productPrice
-        val count = binding.productsCount
+    inner class ProductHolder(v: View, private val binding: ProductMainScreenItemBinding) : RecyclerView.ViewHolder(v) {
+        fun bind(model: ProductModel) {
+            with(binding) {
+                categoryNameText.text = "None"
+                procuctName.text = model.name
+                productPrice.text = model.price.toString() + "₽ на м³"
+                productsCount.text = model.added.toString()
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductHolder {
@@ -22,10 +26,7 @@ class ProductsMainScreenAdapter(private val productsList: ArrayList<ProductModel
     }
 
     override fun onBindViewHolder(holder: ProductHolder, position: Int) {
-        holder.categoryName.text = "Default" //productsList[position].
-        holder.productName.text = "Default" //productsList[position].productName
-        holder.price.text = "Default" //productsList[position].productPrice.toString() + "₽ на м³"
-        holder.count.text = "Default" //"Количество: " + productsList[position].productsCount.toString()
+        holder.bind(productsList[position])
     }
 
     override fun getItemCount(): Int = productsList.size

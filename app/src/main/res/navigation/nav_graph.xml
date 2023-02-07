@@ -27,5 +27,9 @@
         android:id="@+id/productsFragment"
         android:name="com.sausagecorp.objectcalculator.presentation.screens.products.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products" >
+        <action
+            android:id="@+id/action_productsFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

@@ -218,6 +218,7 @@
             android:text="Итоговая цена:"/>
 
         <TextView
+            android:id="@+id/final_price_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"

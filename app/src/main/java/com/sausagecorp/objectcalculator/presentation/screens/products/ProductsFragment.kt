@@ -11,6 +11,7 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sausagecorp.domain.models.ProductModel
 import com.sausagecorp.objectcalculator.R
@@ -21,11 +22,10 @@ import com.sausagecorp.objectcalculator.presentation.adapters.ProductsAdapter
 class ProductsFragment : Fragment() {
 
     private lateinit var binding: FragmentProductsBinding
-    private lateinit var viewModel: ProductsFragmentViewModel
+    private val viewModel by viewModels<ProductsFragmentViewModel> { ProductsFragmentViewModel.Factory }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentProductsBinding.inflate(inflater, container, false)
-        viewModel = ProductsFragmentViewModel(requireActivity().application)
         return binding.root
     }
 
@@ -42,6 +42,15 @@ class ProductsFragment : Fragment() {
         viewModel.productsList.observe(viewLifecycleOwner) {
             initProductsRv(it)
         }
+
+        binding.productsReadyButton.setOnClickListener {
+            viewModel.getProductsListFromDb()
+            viewModel.productsList.observe(viewLifecycleOwner) {
+                viewModel.saveProductsList(it)
+            }
+            findNavController().navigate(R.id.action_productsFragment_to_mainFragment)
+        }
+
     }
 
     private fun initMenu() {
