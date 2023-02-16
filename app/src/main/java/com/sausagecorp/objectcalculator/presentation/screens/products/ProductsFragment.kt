@@ -1,16 +1,15 @@
 package com.sausagecorp.objectcalculator.presentation.screens.products
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sausagecorp.domain.models.ProductModel
@@ -34,23 +33,25 @@ class ProductsFragment : Fragment() {
         val categoryIdFromBundle = requireArguments().getInt("category_id")
         val categoryNameFromBundle = requireArguments().getString("category_name")
         val activity: AppCompatActivity = requireActivity() as AppCompatActivity
-        activity.supportActionBar!!.show()
-        activity.supportActionBar!!.title = "Товары '$categoryNameFromBundle'"
+        activity.supportActionBar!!.apply {
+            show()
+            title = "Товары"
+        }
 
-        initMenu()
         viewModel.getProductsListByCategoryId(categoryIdFromBundle)
         viewModel.productsList.observe(viewLifecycleOwner) {
             initProductsRv(it)
+            viewModel.saveProductsToSharedPrefs(it)
         }
-
+        // initMenu()
         binding.productsReadyButton.setOnClickListener {
             viewModel.getProductsListFromDb()
+            viewModel.wipeCart()
             viewModel.productsList.observe(viewLifecycleOwner) {
                 viewModel.saveProductsList(it)
             }
             findNavController().navigate(R.id.action_productsFragment_to_mainFragment)
         }
-
     }
 
     private fun initMenu() {
@@ -74,13 +75,18 @@ class ProductsFragment : Fragment() {
 
     private fun initSearchView(searchView: SearchView) {
         searchView.queryHint = "Поиск товара"
+        searchView.setOnSearchClickListener {
+
+        }
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                saveProductsToLiveData()
                 productsSearchEngine(query, true)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                saveProductsToLiveData()
                 productsSearchEngine(newText)
                 return true
 
@@ -89,7 +95,7 @@ class ProductsFragment : Fragment() {
         searchView.setOnCloseListener {
             viewModel.getProductsListFromDb()
             viewModel.productsList.observe(viewLifecycleOwner) {
-                initProductsRv(it)
+                saveProductsToLiveData()
             }
             searchView.onActionViewCollapsed()
             true
@@ -146,6 +152,17 @@ class ProductsFragment : Fragment() {
                     model.added -= 1
                     viewModel.saveProduct(model)
                 }
+            }
+        }
+    }
+
+    private fun saveProductsToLiveData() {
+        viewModel.getProductsListFromDb()
+        viewModel.productsList.observe(viewLifecycleOwner) {
+            if (it.size == 0) {
+                initProductsRv(viewModel.getProductsFromSharedPrefs())
+            } else {
+                initProductsRv(it)
             }
         }
     }

@@ -6,9 +6,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import com.sausagecorp.data.repository.ObjectVolumeRepositoryImpl
 import com.sausagecorp.data.repository.ProductRepositoryImpl
 import com.sausagecorp.domain.models.ProductModel
-import com.sausagecorp.domain.usecase.CountFullPriceUseCase
-import com.sausagecorp.domain.usecase.CountObjectVolumeUseCase
-import com.sausagecorp.domain.usecase.GetProductsListUseCase
+import com.sausagecorp.domain.usecase.*
 import com.sausagecorp.objectcalculator.presentation.screens.products.ProductsFragmentViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,15 +19,16 @@ class MainFragmentViewModel(application: Application) : ViewModel() {
     private val productRepoImpl = ProductRepositoryImpl(appContext)
 
     private val countObjectVolumeUseCase = CountObjectVolumeUseCase(objectVolumeRepoImpl)
-    private val getProductsListUseCase = GetProductsListUseCase(productRepoImpl)
+    private val getProductsMainScreenUseCase = GetProductsMainScreenUseCase(productRepoImpl)
     private val countFullPriceUseCase = CountFullPriceUseCase(objectVolumeRepoImpl)
+    private val deleteProductUseCase = DeleteProductUseCase(productRepoImpl)
 
     private val _objectVolume: MutableLiveData<Double> = MutableLiveData()
-    private val _productsList: MutableLiveData<ArrayList<ProductModel>> = MutableLiveData()
+    private val _productsList: MutableLiveData<List<ProductModel>> = MutableLiveData()
     private val _fullPrice: MutableLiveData<Int> = MutableLiveData()
 
     val objectVolume: LiveData<Double> = _objectVolume
-    val productsList: LiveData<ArrayList<ProductModel>> = _productsList
+    val productsList: LiveData<List<ProductModel>> = _productsList
     val fullPrice: LiveData<Int> = _fullPrice
 
     fun countObjectVolume(a: Double, b: Double, c: Double) {
@@ -39,21 +38,27 @@ class MainFragmentViewModel(application: Application) : ViewModel() {
 
     fun getProductsList() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = getProductsListUseCase.invoke()
+            val result = getProductsMainScreenUseCase.invoke()
             _productsList.postValue(result)
         }
     }
 
-    fun countFullPrice() {
-        val fullPrice = countFullPriceUseCase.invoke(objectVolume.value!!, productsList.value!!)
+    fun countFullPrice(volume: Double, productsList: List<ProductModel>) {
+        val fullPrice = countFullPriceUseCase.invoke(volume, productsList)
         _fullPrice.postValue(fullPrice)
+    }
+
+    fun deleteProduct(productName: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteProductUseCase.invoke(productName)
+        }
     }
 
     companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-                return ProductsFragmentViewModel(application) as T
+                return MainFragmentViewModel(application) as T
             }
         }
     }

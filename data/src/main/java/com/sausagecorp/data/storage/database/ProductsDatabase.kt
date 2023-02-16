@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [ProductsDbModel::class], version = 1, exportSchema = false)
+@Database(entities = [ProductsDbModel::class, ProductsCartModel::class], version = 7, exportSchema = false)
 abstract class ProductsDatabase : RoomDatabase() {
 
     abstract fun getProductsDao(): ProductsDao

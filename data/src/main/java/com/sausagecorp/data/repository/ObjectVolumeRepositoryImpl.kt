@@ -8,7 +8,7 @@ class ObjectVolumeRepositoryImpl : ObjectVolumeRepository{
 
     override fun countObjectVolume(a: Double, b: Double, c: Double): Double = a * b * c
 
-    override fun countProductsCost(volume: Double, productsList: ArrayList<ProductModel>): Int {
+    override fun countProductsCost(volume: Double, productsList: List<ProductModel>): Int {
         var productsSum = 0
         for (product in productsList) {
             productsSum += product.price * product.added

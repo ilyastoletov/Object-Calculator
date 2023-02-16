@@ -31,9 +31,8 @@ class CategoriesFragment : Fragment() {
         // Loading default category list to RecyclerView when fragment launched
         val defaultCategoriesList: ArrayList<SubCategoryModel> = arrayListOf(
                 SubCategoryModel("Пол", 1),
-                SubCategoryModel("Потолок", 0),
-                SubCategoryModel("Обои", 0),
-                SubCategoryModel("Краска", 0)
+                SubCategoryModel("Обои", 3),
+                SubCategoryModel("Краска", 4),
         )
         initRv(defaultCategoriesList)
     }

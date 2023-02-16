@@ -13,6 +13,9 @@ data class ProductsDto(
     @SerializedName("quantity")
     @Expose
     val productsQuantity: Int,
+    @SerializedName("parent_category")
+    @Expose
+    val productParentCategory: String,
     @SerializedName("_id")
     val productRecordId: String
 )

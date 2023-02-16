@@ -7,15 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sausagecorp.domain.models.ProductModel
 import com.sausagecorp.objectcalculator.databinding.ProductMainScreenItemBinding
 
-class ProductsMainScreenAdapter(private val productsList: ArrayList<ProductModel>) : RecyclerView.Adapter<ProductsMainScreenAdapter.ProductHolder>() {
+class ProductsMainScreenAdapter(private var productsList: List<ProductModel>,
+                                private val deleteClickListener: DeleteItemListener) : RecyclerView.Adapter<ProductsMainScreenAdapter.ProductHolder>() {
 
     inner class ProductHolder(v: View, private val binding: ProductMainScreenItemBinding) : RecyclerView.ViewHolder(v) {
         fun bind(model: ProductModel) {
             with(binding) {
-                categoryNameText.text = "None"
+                categoryNameText.text = model.parentCategory
                 procuctName.text = model.name
                 productPrice.text = model.price.toString() + "₽ на м³"
-                productsCount.text = model.added.toString()
+                productsCount.text = "Количество: " + model.added.toString()
+                deleteItemButton.setOnClickListener {
+                    deleteClickListener.onClick(model, this@ProductsMainScreenAdapter)
+                }
             }
         }
     }
@@ -29,5 +33,14 @@ class ProductsMainScreenAdapter(private val productsList: ArrayList<ProductModel
         holder.bind(productsList[position])
     }
 
+    fun changeList(newList: List<ProductModel>) {
+        productsList = newList
+        notifyDataSetChanged()
+    }
+
     override fun getItemCount(): Int = productsList.size
+
+    interface DeleteItemListener {
+        fun onClick(model: ProductModel, adapterInstance: ProductsMainScreenAdapter)
+    }
 }

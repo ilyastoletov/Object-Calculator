@@ -61,18 +61,32 @@ class MainFragment : Fragment() {
             viewModel.countObjectVolume(
                 a.toString().toDouble(), b.toString().toDouble(), c.toString().toDouble()
             )
-            viewModel.countFullPrice()
+            viewModel.productsList.observe(viewLifecycleOwner) { products ->
+                   viewModel.objectVolume.observe(viewLifecycleOwner) {volume ->
+                       viewModel.countFullPrice(volume, products)
+                   }
+            }
         } else {
             Toast.makeText(context, "Введите значения", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun initProductsRv(productsList: ArrayList<ProductModel>) {
-        val adapterProducts = ProductsMainScreenAdapter(productsList)
+    private fun initProductsRv(productsList: List<ProductModel>) {
+        val adapterProducts = ProductsMainScreenAdapter(productsList, deleteItemClickListener)
         val rv = binding.productsRv
         rv.apply {
             adapter = adapterProducts
             layoutManager = LinearLayoutManager(context)
+        }
+    }
+
+    private val deleteItemClickListener = object : ProductsMainScreenAdapter.DeleteItemListener {
+        override fun onClick(model: ProductModel, adapterInstance: ProductsMainScreenAdapter) {
+            viewModel.deleteProduct(model.name)
+            viewModel.getProductsList()
+            viewModel.productsList.observe(viewLifecycleOwner) {
+                adapterInstance.changeList(it)
+            }
         }
     }
 
